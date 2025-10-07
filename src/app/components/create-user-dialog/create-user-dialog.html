@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Create New User</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="username" placeholder="Enter username">
+    </mat-form-field>
+    <div>
+    <mat-checkbox [(ngModel)]="isAdmin">Admin User</mat-checkbox>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onCreate()" [disabled]="!username">Create</button>
+</mat-dialog-actions>
