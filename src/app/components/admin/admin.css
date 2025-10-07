@@ -1,0 +1,29 @@
+.admin-container {
+      padding: 16px;
+    }
+
+.warning {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 16px;
+      border-radius: 4px;
+      margin: 16px 0;
+    }
+
+.table-container {
+      margin-top: 24px;
+      overflow-x: auto;
+    }
+
+table {
+      width: 100%;
+    }
+
+.available {
+      color: #4caf50;
+      font-weight: 500;
+    }
+
+button[mat-raised-button] {
+      margin-bottom: 16px;
+    }

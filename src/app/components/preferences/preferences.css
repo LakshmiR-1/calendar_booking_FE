@@ -1,0 +1,17 @@
+mat-card {
+    margin: 16px;
+}
+
+.category-chips {
+    margin: 16px 0;
+}
+
+mat-chip {
+    cursor: pointer;
+}
+
+.hint {
+    margin-top: 16px;
+    color: #666;
+    font-size: 14px;
+}

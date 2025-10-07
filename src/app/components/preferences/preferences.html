@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-header>
+    <mat-card-title>Event Category Preferences</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    <p *ngIf="!currentUser">Please select a user to manage preferences</p>
+    <div *ngIf="currentUser" class="category-chips">
+        <mat-chip-set>
+        <mat-chip *ngFor="let category of availableCategories"
+                    [highlighted]="isSelected(category)"
+                    (click)="toggleCategory(category)">
+            {{ category }}
+            <mat-icon *ngIf="isSelected(category)" matChipTrailingIcon>check</mat-icon>
+        </mat-chip>
+        </mat-chip-set>
+    </div>
+    <p class="hint" *ngIf="currentUser">Click on categories to select/deselect your interests</p>
+    </mat-card-content>
+</mat-card>

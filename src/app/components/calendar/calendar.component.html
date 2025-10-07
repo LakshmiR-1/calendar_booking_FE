@@ -1,0 +1,70 @@
+<div class="calendar-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Weekly Calendar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="calendar-controls">
+        <div class="week-navigation">
+          <button mat-icon-button (click)="previousWeek()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-raised-button (click)="thisWeek()">This Week</button>
+          <button mat-icon-button (click)="nextWeek()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <div class="category-filter">
+          <mat-chip-set>
+            <mat-chip [highlighted]="selectedCategory === null" (click)="selectCategory(null)">All</mat-chip>
+            <mat-chip *ngFor="let cat of userPreferences" 
+                      [highlighted]="selectedCategory === cat" 
+                      (click)="selectCategory(cat)">
+              {{ cat }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </div>
+
+      <div class="calendar-grid">
+        <div *ngFor="let day of weekDays" class="day-column">
+          <div class="day-header">
+            <div class="day-name">{{ getDayName(day) }}</div>
+            <div class="day-date">{{ formatDate(day) }}</div>
+          </div>
+          <div class="time-slots">
+            <div *ngFor="let slot of getSlotsByDay(day)" class="time-slot" [class.booked]="slot.booking" [class.my-booking]="isMyBooking(slot)">
+              <div class="slot-time">{{ formatTime(slot.start_time) }} - {{ formatTime(slot.end_time) }}</div>
+              <div class="slot-title">{{ slot.title }}</div>
+              <div class="slot-category">{{ slot.category }}</div>
+              <div class="slot-description" *ngIf="slot.description">{{ slot.description }}</div>
+              
+              <div class="slot-status" *ngIf="slot.booking">
+                <span class="booked-by">Booked by: {{ slot.booking.username }}</span>
+              </div>
+              
+              <div class="slot-actions">
+                <button mat-raised-button color="primary" 
+                        *ngIf="canBook(slot)" 
+                        (click)="bookSlot(slot)">
+                  Book
+                </button>
+                <button mat-raised-button color="warn" 
+                        *ngIf="isMyBooking(slot)" 
+                        (click)="cancelBooking(slot)">
+                  Cancel
+                </button>
+              </div>
+            </div>
+            
+            <div *ngIf="getSlotsByDay(day).length === 0" class="no-slots">
+              No events available
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

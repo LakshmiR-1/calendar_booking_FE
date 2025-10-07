@@ -1,0 +1,44 @@
+    <h2 mat-dialog-title>Create Time Slot</h2>
+    <mat-dialog-content>
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="category">
+          <mat-option value="Cat 1">Cat 1</mat-option>
+          <mat-option value="Cat 2">Cat 2</mat-option>
+          <mat-option value="Cat 3">Cat 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="title" placeholder="Event title">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="description" placeholder="Event description" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <div style="display: flex; gap: 16px;">
+        <mat-form-field appearance="outline" style="flex: 1">
+          <mat-label>Start Time</mat-label>
+          <input matInput type="time" [(ngModel)]="startTime">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="flex: 1">
+          <mat-label>End Time</mat-label>
+          <input matInput type="time" [(ngModel)]="endTime">
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="onCreate()" [disabled]="!isValid()">Create</button>
+    </mat-dialog-actions>
