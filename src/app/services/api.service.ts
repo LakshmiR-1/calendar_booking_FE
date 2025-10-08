@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 
 export interface User {
@@ -35,11 +36,23 @@ export interface TimeSlot {
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = window.location.hostname === 'localhost' 
-    ? 'http://localhost:8000/api'
-    : `${window.location.protocol}//${window.location.hostname}:8000/api`;
+  private apiUrl: string
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      // ✅ Runs only in browser
+      const hostname = window.location.hostname;
+      const protocol = window.location.protocol;
+
+      this.apiUrl =
+        hostname === 'localhost'
+          ? 'http://localhost:8000/api'
+          : `${protocol}//${hostname}:8000/api`;
+    } else {
+      // ✅ Fallback for SSR (no window object)
+      this.apiUrl = 'http://localhost:8000/api';
+    }
+  }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users`);

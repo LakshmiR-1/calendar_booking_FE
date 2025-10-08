@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 import { User } from './api.service';
 
 @Injectable({
@@ -12,15 +13,21 @@ export class UserStateService {
   private preferencesSubject = new BehaviorSubject<string[]>([]);
   public preferences$: Observable<string[]> = this.preferencesSubject.asObservable();
 
-  constructor() {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      this.currentUserSubject.next(JSON.parse(savedUser));
-    }
-    
-    const savedPrefs = localStorage.getItem('userPreferences');
-    if (savedPrefs) {
-      this.preferencesSubject.next(JSON.parse(savedPrefs));
+  private isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    if (this.isBrowser) {
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        this.currentUserSubject.next(JSON.parse(savedUser));
+      }
+
+      const savedPrefs = localStorage.getItem('userPreferences');
+      if (savedPrefs) {
+        this.preferencesSubject.next(JSON.parse(savedPrefs));
+      }
     }
   }
 
