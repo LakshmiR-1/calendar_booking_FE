@@ -80,6 +80,7 @@ export class UserSelectorComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.loadUsers();
+          alert('User created successfully');
         }
       });
     });
