@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ApiService, TimeSlot } from '../../services/api.service';
 import { UserStateService } from '../../services/user-state.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-admin',
@@ -18,7 +20,9 @@ import { UserStateService } from '../../services/user-state.service';
     MatTableModule, 
     MatButtonModule, 
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './admin.html',
   styleUrl: './admin.css'
@@ -35,18 +39,18 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userStateService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      if (user && user.is_admin) {
-        this.loadTimeSlots();
-      }
+      this.userStateService.currentUser$.subscribe(user => {
+          this.currentUser = user;
+          if (user && user.is_admin) {
+            this.loadTimeSlots();
+          }
     });
   }
 
   loadTimeSlots() {
     this.apiService.getTimeSlots().subscribe({
       next: (slots) => {
-        this.timeSlots = slots;
+          this.timeSlots = slots;
       },
       error: (error) => console.error('Error loading time slots:', error)
     });

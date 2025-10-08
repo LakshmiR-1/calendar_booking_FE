@@ -40,17 +40,18 @@ export class ApiService {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
-      // ✅ Runs only in browser
+      // Runs only in browser
       const hostname = window.location.hostname;
       const protocol = window.location.protocol;
+      const version = "v1";
 
       this.apiUrl =
         hostname === 'localhost'
-          ? 'http://localhost:8000/api'
-          : `${protocol}//${hostname}:8000/api`;
+          ? 'http://localhost:8000/api/v1'
+          : `${protocol}//${hostname}:8000/api/${version}`;
     } else {
-      // ✅ Fallback for SSR (no window object)
-      this.apiUrl = 'http://localhost:8000/api';
+      // Fallback for SSR (no window object)
+      this.apiUrl = 'http://localhost:8000/api/v1';
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,9 +17,10 @@ import { UserStateService } from '../../services/user-state.service';
   templateUrl: './preferences.html',
   styleUrl: './preferences.css'
 })
-export class PreferencesComponent implements OnInit {
+export class PreferencesComponent implements OnInit, OnDestroy {
   availableCategories = ['Cat 1', 'Cat 2', 'Cat 3'];
   selectedCategories: string[] = [];
+  private preferencesSub: any;
   currentUser: any = null;
 
   constructor(
@@ -34,6 +35,16 @@ export class PreferencesComponent implements OnInit {
         this.loadPreferences();
       }
     });
+    // Subscribe to preferences$ to keep selectedCategories in sync
+    this.preferencesSub = this.userStateService.preferences$.subscribe(prefs => {
+      this.selectedCategories = prefs || [];
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.preferencesSub) {
+      this.preferencesSub.unsubscribe();
+    }
   }
 
   loadPreferences() {
@@ -55,21 +66,29 @@ export class PreferencesComponent implements OnInit {
   toggleCategory(category: string) {
     if (!this.currentUser) return;
 
+    // Optimistic update: update UI immediately
+    let updated: string[];
     if (this.isSelected(category)) {
+      updated = this.selectedCategories.filter(c => c !== category);
+      this.userStateService.setPreferences(updated);
       this.apiService.deleteUserPreference(this.currentUser.id, category).subscribe({
-        next: () => {
-          this.selectedCategories = this.selectedCategories.filter(c => c !== category);
-          this.userStateService.setPreferences(this.selectedCategories);
-        },
-        error: (error) => console.error('Error removing preference:', error)
+        next: () => {},
+        error: (error) => {
+          // Revert on error
+          this.userStateService.setPreferences([...this.selectedCategories, category]);
+          console.error('Error removing preference:', error);
+        }
       });
     } else {
+      updated = [...this.selectedCategories, category];
+      this.userStateService.setPreferences(updated);
       this.apiService.addUserPreference(this.currentUser.id, category).subscribe({
-        next: () => {
-          this.selectedCategories.push(category);
-          this.userStateService.setPreferences(this.selectedCategories);
-        },
-        error: (error) => console.error('Error adding preference:', error)
+        next: () => {},
+        error: (error) => {
+          // Revert on error
+          this.userStateService.setPreferences(this.selectedCategories.filter(c => c !== category));
+          console.error('Error adding preference:', error);
+        }
       });
     }
   }
