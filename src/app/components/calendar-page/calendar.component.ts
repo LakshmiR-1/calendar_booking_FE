@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ApiService, TimeSlot } from '../../services/api.service';
 import { UserStateService } from '../../services/user-state.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -33,22 +34,36 @@ export class CalendarComponent implements OnInit {
   selectedCategory: string | null = null;
   weekDays: Date[] = [];
 
+  currentUser$: Observable<any> | undefined;
+
   constructor(
     private apiService: ApiService,
     private userStateService: UserStateService
-  ) {}
+  ) {
+    setTimeout(() => {this.currentUser$ = this.userStateService.currentUser$;});
+  }
 
   ngOnInit() {
     this.setWeekStart(new Date());
+
+    if(this.currentUser$) {
+      this.currentUser = this.currentUser$;
+      this.loadTimeSlots();
+    }
     
     this.userStateService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      this.loadTimeSlots();
+      setTimeout(() => {
+        this.currentUser = user;
+        this.loadTimeSlots();
+      });
     });
 
     this.userStateService.preferences$.subscribe(prefs => {
+      setTimeout(() => {
       this.userPreferences = prefs;
+      console.log("Preferences updated:", this.userPreferences);
       this.loadTimeSlots();
+      });
     });
   }
 
@@ -148,6 +163,7 @@ export class CalendarComponent implements OnInit {
     this.apiService.createBooking(this.currentUser.id, slot.id).subscribe({
       next: () => {
         this.loadTimeSlots();
+        alert('Slot booked successfully');
       },
       error: (error) => console.error('Error booking slot:', error)
     });
@@ -159,6 +175,7 @@ export class CalendarComponent implements OnInit {
     this.apiService.deleteBookingBySlot(slot.id).subscribe({
       next: () => {
         this.loadTimeSlots();
+        alert('Booking cancelled successfully');
       },
       error: (error) => console.error('Error cancelling booking:', error)
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { ApiService, TimeSlot } from '../../services/api.service';
 import { UserStateService } from '../../services/user-state.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -32,18 +33,24 @@ export class AdminComponent implements OnInit {
   currentUser: any = null;
   displayedColumns: string[] = ['category', 'title', 'start_time', 'end_time', 'booking', 'actions'];
 
+  currentUser$: Observable<any> | undefined;
+  
   constructor(
     private apiService: ApiService,
     private userStateService: UserStateService,
-    private dialog: MatDialog
-  ) {}
-
+    private dialog: MatDialog,
+    private cd: ChangeDetectorRef
+  ) {
+    setTimeout(() => {this.currentUser$ = this.userStateService.currentUser$;});
+  }
+  
   ngOnInit() {
-      this.userStateService.currentUser$.subscribe(user => {
-          this.currentUser = user;
-          if (user && user.is_admin) {
-            this.loadTimeSlots();
-          }
+    // Subscribe for user changes
+    this.userStateService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      if (user) {
+        this.loadTimeSlots();
+      }
     });
   }
 
@@ -51,6 +58,7 @@ export class AdminComponent implements OnInit {
     this.apiService.getTimeSlots().subscribe({
       next: (slots) => {
           this.timeSlots = slots;
+          console.log("Loaded time slots:", this.timeSlots);
       },
       error: (error) => console.error('Error loading time slots:', error)
     });
@@ -86,6 +94,7 @@ export class AdminComponent implements OnInit {
       this.apiService.deleteTimeSlot(slot.id).subscribe({
         next: () => {
           this.loadTimeSlots();
+          alert('Slot deleted successfully');
         },
         error: (error) => console.error('Error deleting slot:', error)
       });

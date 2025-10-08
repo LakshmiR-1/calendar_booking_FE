@@ -1,13 +1,42 @@
+
 .user-selector {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: white;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    
-    mat-form-field {
-      flex: 1;
-      max-width: 300px;
+  padding: 18px 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(60, 80, 180, 0.06);
+  margin-bottom: 18px;
+  max-width: 520px;
+}
+
+.user-selector-flex {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.user-selector-divider {
+  width: 1.5px;
+  height: 36px;
+  background: #e3e9f7;
+  margin: 0 10px;
+  border-radius: 2px;
+}
+
+mat-form-field {
+  flex: 1;
+  min-width: 220px;
+  max-width: 320px;
+}
+
+button[mat-raised-button] {
+  min-width: 130px;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 80, 180, 0.08);
+  background: linear-gradient(90deg, #1976d2 60%, #43a047 100%);
+  color: #fff;
+  transition: background 0.2s;
+}
+button[mat-raised-button]:hover {
+  background: linear-gradient(90deg, #1565c0 60%, #388e3c 100%);
 }

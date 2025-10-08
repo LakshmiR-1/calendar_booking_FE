@@ -1,7 +1,11 @@
+body {
+  background: linear-gradient(120deg, #1155f3 0%, #78b2ec 100%);
+  min-height: 100vh;
+}
 .spacer {
   flex: 1 1 auto;
 }
 
 button.active {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(245, 79, 79, 0.2);
 }

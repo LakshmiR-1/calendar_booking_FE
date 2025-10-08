@@ -65,6 +65,7 @@ export class CreateSlotDialogComponent {
     this.apiService.createTimeSlot(slotData).subscribe({
       next: () => {
         this.dialogRef.close(true);
+        alert('Slot created successfully');
       },
       error: (error) => console.error('Error creating time slot:', error)
     });

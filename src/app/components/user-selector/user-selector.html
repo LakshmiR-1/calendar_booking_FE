@@ -1,11 +1,14 @@
 <div class="user-selector">
-    <mat-form-field appearance="outline">
-    <mat-label>Select User</mat-label>
-    <mat-select [(ngModel)]="selectedUserId" (ngModelChange)="onUserChange()">
-        <mat-option *ngFor="let user of users" [value]="user.id">
-        {{ user.username }} {{ user.is_admin ? '(Admin)' : '' }}
-        </mat-option>
-    </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="openCreateUserDialog()">Create User</button>
+    <div class="user-selector-flex">
+        <mat-form-field appearance="outline">
+            <mat-label>Select User</mat-label>
+            <mat-select [(ngModel)]="selectedUserId" (ngModelChange)="onUserChange()">
+                <mat-option *ngFor="let user of users" [value]="user.id">
+                    {{ user.username }} {{ user.is_admin ? '(Admin)' : '' }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="user-selector-divider"></div>
+        <button mat-raised-button color="primary" (click)="openCreateUserDialog()">Create User</button>
+    </div>
 </div>

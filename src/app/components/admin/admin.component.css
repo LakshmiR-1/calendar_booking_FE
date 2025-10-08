@@ -1,0 +1,77 @@
+/* Admin Panel Stylish Modern Styling */
+.admin-container {
+  padding: 32px 24px;
+  background: linear-gradient(120deg, #f8fafc 0%, #e3e9f7 100%);
+  min-height: 100vh;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(60, 80, 180, 0.07);
+}
+
+mat-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(60, 80, 180, 0.08);
+  background: #fff;
+}
+
+mat-card-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #2a3a5e;
+  letter-spacing: 0.5px;
+}
+
+.warning {
+  background: #fff3f3;
+  color: #e53935;
+  border-left: 5px solid #e53935;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-size: 1.08em;
+}
+
+.table-container {
+  margin-top: 18px;
+  overflow-x: auto;
+}
+
+table.mat-table {
+  width: 100%;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(60, 80, 180, 0.04);
+}
+
+th.mat-header-cell {
+  background: #e3e9f7;
+  color: #2a3a5e;
+  font-weight: 600;
+  font-size: 1.07em;
+  border-bottom: 2px solid #d0d7e8;
+}
+
+td.mat-cell {
+  font-size: 1.04em;
+  color: #3a4a6e;
+  border-bottom: 1px solid #e0e6f0;
+}
+
+button[mat-raised-button] {
+  background: linear-gradient(90deg, #1976d2 60%, #43a047 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 80, 180, 0.08);
+  transition: background 0.2s;
+}
+button[mat-raised-button]:hover {
+  background: linear-gradient(90deg, #1565c0 60%, #388e3c 100%);
+}
+
+button[mat-icon-button] {
+  color: #e53935;
+  transition: color 0.2s;
+}
+button[mat-icon-button]:hover {
+  color: #b71c1c;
+}
